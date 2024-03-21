@@ -56,7 +56,7 @@ plt.ylabel('Eigen Values')
 # show the legend
 plt.legend()
 # show the plot
-plt.show()
+#plt.show()
 
 # literal 6: Classification
 # transform train data to PCA, principle axis
@@ -117,7 +117,7 @@ plt.subplot(111)
 plt.plot(range(2, 20), knnTestAcc, marker='.')
 plt.xlabel('K value')
 plt.ylabel('Accuracy')
-plt.show()
+#plt.show()
 
 
 # literal 5: Print eigen vector matrix!
@@ -155,7 +155,7 @@ plt.plot(range(1, nComp+1), accVarianceArr, marker='.')
 plt.hlines(0.95, 0, nComp, colors='r')
 plt.xlabel('Acc. Variance')
 plt.ylabel('Number of Components')
-plt.show()
+#plt.show()
 
 # literal 1: Graph the eigen face of the mean of the initial matrix, before applyin PCA
 meanVect = pca.mean_
@@ -164,7 +164,7 @@ plt.subplot(111)
 plt.imshow(meanVect.reshape((imgHeight, imgWidth)), cmap=plt.cm.gray)
 plt.xticks(())
 plt.yticks(())
-plt.show()
+#plt.show()
 
 # literal 3: Graph all eigen faces for selected principle components
 plt.figure('Eigen Faces')
