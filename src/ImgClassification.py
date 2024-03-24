@@ -58,79 +58,6 @@ plt.legend()
 # show the plot
 #plt.show()
 
-# literal 6: Classification
-# transform train data to PCA, principle axis
-pca_imgVectorsTrain = pca.transform(np.array(imgVectorsTrain))
-typeDist = 2  # euclidean
-k = 8  # number of neighbours
-# build and train model that uses euclidean distance
-clf = KNeighborsClassifier(n_neighbors=k, p=typeDist)
-clf.fit(pca_imgVectorsTrain, labelsTrain)
-# go through test data set images
-imgVectorsTest = []
-testImgNames = []
-labelsTest = []
-for filepath in glob.glob(os.path.join(r'data\test_dataset', '*.jpg')):
-    # test correct labels
-    labelsTest.append(labelCode[filepath[18:20]])
-    # Create vector grayscale images
-    PIL_img = Image.open(filepath).convert('L')
-    # file shorter name
-    fileName = filepath.split('\\')[2]
-    testImgNames.append(fileName)
-    # width, height = PIL_img.size
-    imgVectorsTest.append(np.array(PIL_img).flatten().tolist())
-# transform test data with PCA
-pca_imgVectorsTest = pca.transform(np.array(imgVectorsTest))
-# predicted labels
-pred_labels = clf.predict(pca_imgVectorsTest)
-# results
-resultDict = defaultdict(list)
-invLabCode = dict((y, x) for x, y in labelCode.items())
-for label, fileName in zip(pred_labels, testImgNames):
-    resultDict[invLabCode[label]].append(fileName)
-# result dictionary to string
-strResult = 'PCA, to aid the process of image classification\n'
-strResult += f'Accuracy: {metrics.accuracy_score(labelsTest, pred_labels)}\n\n'
-for key, val in resultDict.items():
-    strResult += str(key) + '\n'
-    for v in val:
-        strResult += '\t\t' + str(v) + '\n'
-# print to file categories
-with open(r'data\results\categories.txt', 'w', encoding="utf-8") as f:
-    f.write(strResult)
-
-
-# find best k for knn classification
-typeDist = 2  # euclidean
-knnTestAcc = []
-for kValue in range(2, 20):
-    # build and train model that uses euclidean distance
-    clfTest = KNeighborsClassifier(n_neighbors=kValue, p=typeDist)
-    clfTest.fit(pca_imgVectorsTrain, labelsTrain)
-    # predicted labels
-    pred_labelsKnn = clfTest.predict(pca_imgVectorsTest)
-    knnTestAcc.append(metrics.accuracy_score(labelsTest, pred_labelsKnn))
-# plot best k
-plt.figure('K vs Accuracy')
-plt.subplot(111)
-plt.plot(range(2, 20), knnTestAcc, marker='.')
-plt.xlabel('K value')
-plt.ylabel('Accuracy')
-#plt.show()
-
-
-# literal 5: Print eigen vector matrix!
-with open(r'data\results\eigenVectMatrix.txt', 'w', encoding="utf-8") as f:
-    eigenVectMatrix = pca.components_
-    pdEigenVectMatrix = pd.DataFrame(eigenVectMatrix.transpose())
-    f.write('Eigen Vector Matrix\n\n')
-    f.write(str(pdEigenVectMatrix) + '\n')
-    nRows, nCols = pca.components_.transpose().shape
-    pcColNames = []
-    for colNum in range(len(eigenVectMatrix)):
-        pcColNames.append(f'PC{colNum}')
-
 # literal 3: accumulated variance for chosen eigen vectors in 2) literal
 dictAccVariance = {}
 pcaVariance = pca.explained_variance_ratio_
@@ -153,9 +80,93 @@ plt.figure('Accumulated variance vs components')
 plt.subplot(111)
 plt.plot(range(1, nComp+1), accVarianceArr, marker='.')
 plt.hlines(0.95, 0, nComp, colors='r')
-plt.xlabel('Acc. Variance')
-plt.ylabel('Number of Components')
-#plt.show()
+plt.xlabel('Number of Components')
+plt.ylabel('Acc. Variance')
+plt.show()
+
+# literal 6: Classification
+# transform train data to PCA, principle axis
+pca_imgVectorsTrain = pca.transform(np.array(imgVectorsTrain))
+typeDist = 2  # euclidean
+k = 19  # it was 8 we changed it to 2 for the best accuracy
+# build and train model that uses euclidean distance
+clf = KNeighborsClassifier(n_neighbors=k, p=typeDist)
+clf.fit(pca_imgVectorsTrain, labelsTrain)
+# go through test data set images
+imgVectorsTest = []
+testImgNames = []
+labelsTest = []
+for filepath in glob.glob(os.path.join(r'data\test_dataset', '*.jpg')):
+    # test correct labels
+    labelsTest.append(labelCode[filepath[18:20]])
+    # Create vector grayscale images
+    PIL_img = Image.open(filepath).convert('L')
+    # file shorter name
+    fileName = filepath.split('\\')[2]
+    testImgNames.append(fileName)
+    # width, height = PIL_img.size
+    imgVectorsTest.append(np.array(PIL_img).flatten().tolist())
+
+# transform test data with PCA
+pca_imgVectorsTest = pca.transform(np.array(imgVectorsTest))
+
+# predicted labels 
+pred_labels = clf.predict(pca_imgVectorsTest)
+
+print("Predictions from the classifier:")
+print(pred_labels)
+print("Target values:")
+print(labelsTest)
+
+
+# find best k for knn classification
+typeDist = 2  # euclidean
+knnTestAcc = []
+for kValue in range(2, 20):
+    # build and train model that uses euclidean distance
+    clfTest = KNeighborsClassifier(n_neighbors=kValue, p=typeDist)
+    clfTest.fit(pca_imgVectorsTrain, labelsTrain)
+    # predicted labels
+    pred_labelsKnn = clfTest.predict(pca_imgVectorsTest)
+    knnTestAcc.append(metrics.accuracy_score(labelsTest, pred_labelsKnn))
+# plot best k
+plt.figure('K vs Accuracy')
+plt.subplot(111)
+plt.plot(range(2, 20), knnTestAcc, marker='.')
+plt.xlabel('K value')
+plt.ylabel('Accuracy')
+plt.show()
+
+
+# results
+resultDict = defaultdict(list)
+invLabCode = dict((y, x) for x, y in labelCode.items())
+for label, fileName in zip(pred_labels, testImgNames):
+    resultDict[invLabCode[label]].append(fileName)
+# result dictionary to string
+strResult = 'PCA, to aid the process of image classification\n'
+strResult += f'Accuracy: {metrics.accuracy_score(labelsTest, pred_labels)}\n\n'
+for key, val in resultDict.items():
+    strResult += str(key) + '\n'
+    for v in val:
+        strResult += '\t\t' + str(v) + '\n'
+# print to file categories
+with open(r'data\results\categories.txt', 'w', encoding="utf-8") as f:
+    f.write(strResult)
+
+
+# literal 5: Print eigen vector matrix!
+with open(r'data\results\eigenVectMatrix.txt', 'w', encoding="utf-8") as f:
+    eigenVectMatrix = pca.components_
+    pdEigenVectMatrix = pd.DataFrame(eigenVectMatrix.transpose())
+    f.write('Eigen Vector Matrix\n\n')
+    f.write(str(pdEigenVectMatrix) + '\n')
+    nRows, nCols = pca.components_.transpose().shape
+    pcColNames = []
+    for colNum in range(len(eigenVectMatrix)):
+        pcColNames.append(f'PC{colNum}')
+
+
 
 # literal 1: Graph the eigen face of the mean of the initial matrix, before applyin PCA
 meanVect = pca.mean_
