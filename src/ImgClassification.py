@@ -88,7 +88,7 @@ plt.show()
 # transform train data to PCA, principle axis
 pca_imgVectorsTrain = pca.transform(np.array(imgVectorsTrain))
 typeDist = 2  # euclidean
-k = 19  # it was 8 we changed it to 2 for the best accuracy
+k = 2  # it was 8 we changed it to 2 for the best accuracy
 # build and train model that uses euclidean distance
 clf = KNeighborsClassifier(n_neighbors=k, p=typeDist)
 clf.fit(pca_imgVectorsTrain, labelsTrain)
