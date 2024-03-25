@@ -1,24 +1,21 @@
-# Client running the program
-
-# read files images iteratively
 import os
 import glob
 from PIL import Image
 import numpy as np
+import pandas as pd
 from sklearn import metrics
 from sklearn.decomposition import PCA
-import matplotlib.pyplot as plt
+from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline
 from sklearn.neighbors import KNeighborsClassifier
+import matplotlib.pyplot as plt
 from collections import defaultdict
-import pandas as pd
+from joblib import dump
 
 # constants
 imgHeight = 256
 imgWidth = 256
 
-# Build training set and training labels
-# Labels are based on the persons name, first letter of the picture file
-labelsTrain = []
 labelCode = {
     'KA': 0,
     'KL': 1,
@@ -31,19 +28,20 @@ labelCode = {
     'UY': 8,
     'YM': 9,
 }
-imgVectorsTrain = []
-# go through training images
-for filepath in glob.glob(os.path.join(r'data\train_dataset', '*.jpg')):
-    # Assign labels
-    labelsTrain.append(labelCode[filepath[19:21]])
-    # Create vector grayscale images
-    PIL_img = Image.open(filepath).convert('L')
-    # width, height = PIL_img.size
-    imgVectorsTrain.append(np.array(PIL_img).flatten().tolist())
+
+# Labels are based on the persons name, first letter of the picture file
+def load_images(image_path, imgHeight, imgWidth, labelCode):
+    labelsTrain = []
+    img_vectorsTrain = []
+    for filepath in glob.glob(os.path.join(image_path, '*.jpg')):
+        labelsTrain.append(labelCode[filepath[19:21]])
+        image = Image.open(filepath).convert('L')
+        img_vectorsTrain.append(np.array(image).flatten().tolist())
+    return np.array(img_vectorsTrain), labelsTrain
 
 # RUN PCA
 nComp = 80
-pca = PCA(n_components=nComp, whiten=True).fit(np.array(imgVectorsTrain))
+pca = PCA(n_components=nComp, whiten=True).fit(np.array(img_vectorsTrain))
 
 # literal 2: Scree Plot to see ideal number of components
 # corresponding eigen values
