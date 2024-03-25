@@ -42,20 +42,29 @@ def load_images(image_path, imgHeight, imgWidth, labelCode):
 # RUN PCA
 nComp = 80
 pca = PCA(n_components=nComp, whiten=True).fit(np.array(img_vectorsTrain))
-
-# literal 2: Scree Plot to see ideal number of components
-# corresponding eigen values
-plt.figure('Scree Plot')
 eVals = np.square(pca.singular_values_)
-plt.plot(range(1, len(eVals)+1), eVals, marker='.',
-         label='Scree Plot for PCA')
-plt.xlabel('Component Number')
-plt.ylabel('Eigen Values')
-# show the legend
-plt.legend()
-# show the plot
-#plt.show()
+def plot_scree(eigenvalues):
+    plt.figure('Scree Plot')
+    plt.plot(np.arange(1, len(eigenvalues) + 1), eigenvalues, marker='o', linestyle='-', color='b')
+    plt.xlabel('Component Number')
+    plt.ylabel('Eigenvalue')
+    plt.title('Scree Plot for PCA Eigenvalues')
+    plt.axhline(y=1, color='r', linestyle='--')  # Kaiser criterion (Eigenvalue=1)
+    plt.grid(True)
+    plt.show()
 
+# find best k for knn classification
+def find_best_k(X_train, y_train, X_test, y_test, k_range, metric):
+    accuracies = []
+    for k in k_range:
+        clf = KNeighborsClassifier(n_neighbors=k, metric=metric)
+        clf.fit(X_train, y_train)
+        pred = clf.predict(X_test)
+        accuracies.append(metrics.accuracy_score(y_test, pred))
+    best_k = k_range[np.argmax(accuracies)]
+    print(f'Best k by accuracy: {best_k}')
+
+    
 # literal 3: accumulated variance for chosen eigen vectors in 2) literal
 dictAccVariance = {}
 pcaVariance = pca.explained_variance_ratio_
@@ -117,7 +126,6 @@ print("Target values:")
 print(labelsTest)
 
 
-# find best k for knn classification
 typeDist = 2  # euclidean
 knnTestAcc = []
 for kValue in range(2, 20):
