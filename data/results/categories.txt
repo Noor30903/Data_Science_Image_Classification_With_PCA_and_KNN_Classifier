@@ -1,5 +1,5 @@
 PCA, to aid the process of image classification
-Accuracy: 0.975
+Accuracy: 0.98
 
 KA
 		KA.AN1.39.jpg
@@ -127,7 +127,6 @@ NA
 		NA.SU2.209.jpg
 		NA.SU3.210.jpg
 		NM.DI1.107.jpg
-		YM.DI2.65.jpg
 NM
 		NM.AN1.104.jpg
 		NM.AN2.105.jpg
@@ -195,6 +194,7 @@ YM
 		YM.AN2.62.jpg
 		YM.AN3.63.jpg
 		YM.DI1.64.jpg
+		YM.DI2.65.jpg
 		YM.DI3.66.jpg
 		YM.FE1.67.jpg
 		YM.FE2.68.jpg

@@ -92,17 +92,16 @@ pca, pca_imgVectorsTrain, n_components = apply_pca(np.array(img_vectors_train))
 
 img_vectors_test, labels_test, imgnameTest = load_images(TEST_DATASET_PATH, imgHeight, imgWidth, labelCode)
 
+pca_imgVectorsTest = pca.transform(np.array(img_vectors_test))
 # literal 6: Classification
 typeDist = 2  # euclidean
 k_range=range(2, 20)
-k = find_best_k(img_vectors_train, labels_train, img_vectors_test, labels_test, k_range, typeDist)  # it was 8 we changed it to 2 for the best accuracy
-
+k = find_best_k(pca_imgVectorsTrain, labels_train, pca_imgVectorsTest, labels_test, k_range, typeDist)  # it was 8 we changed it to 2 for the best accuracy
 
 # build and train model that uses euclidean distance
 clf = KNeighborsClassifier(n_neighbors=k, p=typeDist)
 clf.fit(pca_imgVectorsTrain, labels_train)
-# transform test data with PCA
-pca_imgVectorsTest = pca.transform(np.array(img_vectors_test))
+
 # predicted labels 
 pred_labels = clf.predict(pca_imgVectorsTest)
 print("Predictions from the classifier:")
