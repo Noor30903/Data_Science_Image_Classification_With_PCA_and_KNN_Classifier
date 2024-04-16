@@ -65,7 +65,7 @@ def plot_scree(eigenvalues):
     plt.title('Scree Plot for PCA Eigenvalues')
     plt.axhline(y=1, color='r', linestyle='--')  # Kaiser criterion (Eigenvalue=1)
     plt.grid(True)
-    plt.show()
+    #plt.show()
 
 # find best k for knn classification
 def find_best_k(X_train, y_train, X_test, y_test, k_range, typeDist):
@@ -83,7 +83,7 @@ def find_best_k(X_train, y_train, X_test, y_test, k_range, typeDist):
     plt.ylabel('Accuracy')
     plt.title('KNN Accuracy for different k values')
     plt.grid(True)
-    plt.show()
+    #plt.show()
     return best_k
 
 img_vectors_train, labels_train, imgnameTrain = load_images(TRAIN_DATASET_PATH, imgHeight, imgWidth, labelCode)
@@ -96,14 +96,14 @@ pca_imgVectorsTest = pca.transform(np.array(img_vectors_test))
 # literal 6: Classification
 typeDist = 2  # euclidean
 k_range=range(2, 20)
-k = find_best_k(pca_imgVectorsTrain, labels_train, pca_imgVectorsTest, labels_test, k_range, typeDist)  # it was 8 we changed it to 2 for the best accuracy
+k = find_best_k(img_vectors_train, labels_train, img_vectors_test, labels_test, k_range, typeDist)  # it was 8 we changed it to 2 for the best accuracy
 
 # build and train model that uses euclidean distance
 clf = KNeighborsClassifier(n_neighbors=k, p=typeDist)
-clf.fit(pca_imgVectorsTrain, labels_train)
+clf.fit(img_vectors_train, labels_train)
 
 # predicted labels 
-pred_labels = clf.predict(pca_imgVectorsTest)
+pred_labels = clf.predict(img_vectors_test)
 print("Predictions from the classifier:")
 print(pred_labels)
 print("Target values:")
@@ -158,6 +158,8 @@ for i in range(total_plots):  # Use the adjusted total_plots here
     plt.imshow(pca.components_[i].reshape((imgHeight, imgWidth)), cmap=plt.cm.gray)
     plt.xticks(())
     plt.yticks(())
+
+
 plt.show()
 
 

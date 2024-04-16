@@ -1,5 +1,5 @@
 PCA, to aid the process of image classification
-Accuracy: 0.98
+Accuracy: 0.995
 
 KA
 		KA.AN1.39.jpg
@@ -22,6 +22,7 @@ KA
 		KA.SU1.36.jpg
 		KA.SU2.37.jpg
 		KA.SU3.38.jpg
+		KR.AN2.84.jpg
 KL
 		KL.AN1.167.jpg
 		KL.AN2.168.jpg
@@ -66,7 +67,6 @@ KM
 		KM.SU2.15.jpg
 		KM.SU3.16.jpg
 KR
-		KR.AN2.84.jpg
 		KR.AN3.85.jpg
 		KR.DI1.86.jpg
 		KR.DI2.87.jpg
@@ -85,15 +85,13 @@ KR
 		KR.SU1.80.jpg
 		KR.SU2.81.jpg
 		KR.SU3.82.jpg
-		MK.DI3.130.jpg
-		NM.DI3.109.jpg
-		YM.SU1.58.jpg
 MK
 		MK.AN1.125.jpg
 		MK.AN2.126.jpg
 		MK.AN3.127.jpg
 		MK.DI1.128.jpg
 		MK.DI2.129.jpg
+		MK.DI3.130.jpg
 		MK.FE2.131.jpg
 		MK.FE2.132.jpg
 		MK.FE3.133.jpg
@@ -126,11 +124,12 @@ NA
 		NA.SU1.208.jpg
 		NA.SU2.209.jpg
 		NA.SU3.210.jpg
-		NM.DI1.107.jpg
 NM
 		NM.AN1.104.jpg
 		NM.AN2.105.jpg
 		NM.AN3.106.jpg
+		NM.DI1.107.jpg
+		NM.DI3.109.jpg
 		NM.FE1.110.jpg
 		NM.FE2.111.jpg
 		NM.FE3.112.jpg
@@ -209,5 +208,6 @@ YM
 		YM.SA1.55.jpg
 		YM.SA2.56.jpg
 		YM.SA3.57.jpg
+		YM.SU1.58.jpg
 		YM.SU2.59.jpg
 		YM.SU3.60.jpg
