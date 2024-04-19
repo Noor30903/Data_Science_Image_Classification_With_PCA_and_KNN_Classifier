@@ -45,7 +45,7 @@ def load_images(image_path, imgHeight, imgWidth, labelCode):
     return np.array(img_vectorsTrain), labelsTrain,imgname
 
 # Function to RUN PCA
-def apply_pca(X_train, variance_threshold=0.95):
+def apply_pca(X_train, variance_threshold=0.80):
     
     pca = PCA(n_components=variance_threshold, whiten=True)
     X_train_pca = pca.fit_transform(X_train)

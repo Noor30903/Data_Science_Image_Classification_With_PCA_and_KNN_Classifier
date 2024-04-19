@@ -1,5 +1,5 @@
 PCA, to aid the process of image classification
-Accuracy: 0.85
+Accuracy: 0.95
 
 KA
 		KA.AN1.41.jpg
@@ -8,8 +8,6 @@ KA
 		KA.HA2.30.jpg
 		KA.SU1.37.jpg
 		KA.SU2.37.jpg
-		MK.FE1.133.jpg
-		NM.DI2.107.jpg
 KL
 		KL.AN1.169.jpg
 		KL.AN3.169.jpg
@@ -18,8 +16,6 @@ KL
 		KL.SA1.163.jpg
 		KL.SA3.163.jpg
 		TM.HA1.181.jpg
-		YM.AN1.62.jpg
-		YM.HA2.52.jpg
 KM
 		KM.AN1.18.jpg
 		KM.AN2.18.jpg
@@ -27,8 +23,6 @@ KM
 		KM.HA4.7.jpg
 		KM.SA1.11.jpg
 		KM.SA3.11.jpg
-		MK.FE3.133.jpg
-		YM.DI2.64.jpg
 KR
 		KR.DI1.86.jpg
 		KR.DI2.86.jpg
@@ -36,13 +30,21 @@ KR
 		KR.HA2.75.jpg
 		KR.SU1.81.jpg
 		KR.SU2.81.jpg
-		TM.DI2.193.jpg
-		TM.FE1.197.jpg
 MK
 		MK.DI1.129.jpg
 		MK.DI2.129.jpg
+		MK.FE3.133.jpg
 		MK.HA1.117.jpg
 		MK.HA2.117.jpg
+		YM.AN1.62.jpg
+NM
+		MK.FE1.133.jpg
+		NM.DI1.107.jpg
+		NM.DI2.107.jpg
+		NM.FE1.112.jpg
+		NM.FE3.112.jpg
+		NM.HA1.97.jpg
+		NM.HA3.97.jpg
 NA
 		NA.NE1.200.jpg
 		NA.NE2.200.jpg
@@ -50,14 +52,10 @@ NA
 		NA.SA2.206.jpg
 		NA.SU1.210.jpg
 		NA.SU3.210.jpg
-NM
-		NM.DI1.107.jpg
-		NM.FE1.112.jpg
-		NM.FE3.112.jpg
-		NM.HA1.97.jpg
-		NM.HA3.97.jpg
 TM
 		TM.DI1.193.jpg
+		TM.DI2.193.jpg
+		TM.FE1.197.jpg
 		TM.FE2.197.jpg
 		TM.HA2.181.jpg
 UY
@@ -70,4 +68,6 @@ UY
 YM
 		YM.AN2.62.jpg
 		YM.DI1.64.jpg
+		YM.DI2.64.jpg
 		YM.HA1.52.jpg
+		YM.HA2.52.jpg
