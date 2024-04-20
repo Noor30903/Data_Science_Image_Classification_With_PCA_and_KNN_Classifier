@@ -335,3 +335,106 @@ print(f"Training Time: {training_time_pca:.4f}s, Prediction Time: {prediction_ti
 print("\nTraining and Prediction Time (without PCA):")
 print(f"Training Time: {training_time_no_pca:.4f}s, Prediction Time: {prediction_time_no_pca:.4f}s")
 '''
+
+
+
+
+
+
+'''
+**compare the k-NN accuracy and performance with and without PCA**
+
+import os
+import glob
+from PIL import Image
+import numpy as np
+import pandas as pd
+from sklearn import metrics
+from sklearn.decomposition import PCA
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.neighbors import KNeighborsClassifier
+import matplotlib.pyplot as plt
+from collections import defaultdict
+
+# constants
+imgHeight = 256
+imgWidth = 256
+TRAIN_DATASET_PATH = r'data\train_dataset'
+TEST_DATASET_PATH = r'data\test_dataset'
+
+labelCode = {
+    'KA': 0,
+    'KL': 1,
+    'KM': 2,
+    'KR': 3,
+    'MK': 4,
+    'NA': 5,
+    'NM': 6,
+    'TM': 7,
+    'UY': 8,
+    'YM': 9,
+}
+
+# Labels are based on the persons name, first letter of the picture file
+def load_images(image_path, imgHeight, imgWidth, labelCode):
+    labels = []
+    img_vectors = []
+    img_names = []
+    for filepath in glob.glob(os.path.join(image_path, '*.jpg')):
+        labels.append(labelCode[filepath.split(os.sep)[-1][:2]])
+        image = Image.open(filepath).convert('L')
+        img_name = filepath.split('\\')[-1]
+        img_names.append(img_name)
+        img_vectors.append(np.array(image).flatten())
+    return np.array(img_vectors), np.array(labels), img_names
+
+# Load images
+img_vectors_train, labels_train, img_names_train = load_images(TRAIN_DATASET_PATH, imgHeight, imgWidth, labelCode)
+img_vectors_test, labels_test, img_names_test = load_images(TEST_DATASET_PATH, imgHeight, imgWidth, labelCode)
+
+# Function to RUN PCA
+def apply_pca(X_train, X_test, variance_threshold=0.80):
+    pca = PCA(n_components=variance_threshold, whiten=True)
+    X_train_pca = pca.fit_transform(X_train)
+    X_test_pca = pca.transform(X_test)
+    
+    # Determine the number of components that explain the threshold variance
+    n_components = np.sum(np.cumsum(pca.explained_variance_ratio_) <= variance_threshold)
+    print(f"PCA selected {n_components} components to explain {variance_threshold * 100}% of variance.")
+    
+    return pca, X_train_pca, X_test_pca
+
+# KNN Classifier
+def knn_classifier(X_train, y_train, X_test, y_test, k):
+    clf = KNeighborsClassifier(n_neighbors=k)
+    clf.fit(X_train, y_train)
+    pred = clf.predict(X_test)
+    accuracy = metrics.accuracy_score(y_test, pred)
+    return accuracy
+
+# Without PCA
+k_range = range(2, 20)
+accuracies_without_pca = []
+for k in k_range:
+    accuracy = knn_classifier(img_vectors_train, labels_train, img_vectors_test, labels_test, k)
+    accuracies_without_pca.append(accuracy)
+
+# With PCA
+pca, img_vectors_train_pca, img_vectors_test_pca = apply_pca(img_vectors_train, img_vectors_test)
+accuracies_with_pca = []
+for k in k_range:
+    accuracy = knn_classifier(img_vectors_train_pca, labels_train, img_vectors_test_pca, labels_test, k)
+    accuracies_with_pca.append(accuracy)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+plt.plot(k_range, accuracies_without_pca, label='Without PCA')
+plt.plot(k_range, accuracies_with_pca, label='With PCA')
+plt.title('Accuracy of k-NN with and without PCA')
+plt.xlabel('Number of Neighbors (k)')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.grid(True)
+plt.show()
+'''
